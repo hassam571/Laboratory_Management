@@ -9,11 +9,9 @@
         <meta name="author" content="Zoyothemes"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-   
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link href="{{asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" id="app-style" />
         <link href="{{asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
-    
-    
     
     </head>
 
@@ -36,9 +34,6 @@
                                                 </a>
                                             </div>
 
-
-
-                                       
                                         @if($errors->any())
                                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                             <ul class="mb-0">
@@ -79,41 +74,67 @@
                                             
                                             <div class="saprator my-4"><span>or continue with email</span></div>
 
-                                            <div class="pt-0">
-                                                <form action="{{ route('login.post') }}" method="POST">
-                                                    @csrf
-                                                    <div class="form-group mb-3">
-                                                        <label for="emailaddress" class="form-label">Email address</label>
-                                                        <input class="form-control" type="email" id="emailaddress" name="email" required placeholder="Enter your email" value="{{ old('email') }}">
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="password" class="form-label">Password</label>
-                                                        <input class="form-control" type="password" name="password" id="password" required placeholder="Enter your password">
-                                                    </div>
-                                                    <div class="form-group d-flex mb-3">
-                                                        <div class="col-sm-6">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" name="remember" class="form-check-input" id="checkbox-signin">
-                                                                <label class="form-check-label" for="checkbox-signin">Remember me</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-6 text-end">
-                                                            <a class="text-muted fs-14" href="#">Forgot password?</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group mb-0 row">
-                                                        <div class="col-12">
-                                                            <div class="d-grid">
-                                                                <button class="btn btn-primary" type="submit">Log In</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                                <div class="text-center text-muted mb-4">
-                                                    <p class="mb-0">Don't have an account ?<a class='text-primary ms-2 fw-medium' href='auth-register.html'>Sing up</a></p>
-                                                </div>
-                                                
-                                            </div>
+                                         <div class="pt-0">
+                                         <form id="loginForm" action="{{ route('login.post') }}" method="POST">
+        @csrf
+        <div class="form-group mb-3">
+            <label for="emailaddress" class="form-label">Email address</label>
+            <input class="form-control" type="email" id="emailaddress" name="email" required placeholder="Enter your email" value="{{ old('email') }}">
+        </div>
+        <div class="form-group mb-3">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+                <input class="form-control" type="password" name="password" id="password" required placeholder="Enter your password">
+                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                    <i class="fas fa-eye" id="eyeIcon"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Buttons to autofill email and password -->
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <button type="button" class="btn btn-secondary" onclick="fillLogin('a@a', 'a')">Admin</button>
+            <button type="button" class="btn btn-secondary" onclick="fillLogin('r@r', 'a')">Receptionist</button>
+            <button type="button" class="btn btn-secondary" onclick="fillLogin('rp@r', 'a')">Reporter</button>
+            <button type="button" class="btn btn-secondary" onclick="fillLogin('s@s', 'a')">Sampler</button>
+            <button type="button" class="btn btn-secondary" onclick="fillLogin('m@m', 'a')">Manager</button>
+        </div>
+
+        <div class="form-group mb-0 row">
+            <div class="col-12">
+                <div class="d-grid">
+                    <button class="btn btn-primary" type="submit">Log In</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- JavaScript for autofilling email and password -->
+<script>
+    function fillLogin(email, password) {
+        document.getElementById('emailaddress').value = email;
+        document.getElementById('password').value = password;
+        document.getElementById('loginForm').submit();
+    }
+</script>
+
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        var passwordInput = document.getElementById('password');
+        var eyeIcon = document.getElementById('eyeIcon');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    });
+</script>
+
                                         </div>
 
                                     </div>
@@ -148,8 +169,6 @@
         <script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
         <script src="{{asset('assets/js/pages/crm-dashboard.init.js')}}"></script>
         <script src="{{asset('assets/js/app.js')}}"></script>
-
-
 
         
     </body>
