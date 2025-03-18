@@ -118,22 +118,7 @@
                 </div>
             </div>
             
-            <script>
-                // When a title is selected, automatically set the gender if possible
-                document.getElementById('titleSelect').addEventListener('change', function() {
-                    var title = this.value;
-                    var genderSelect = document.getElementById('genderSelect');
-                    // Set gender automatically based on title mapping
-                    if (title === 'Mr') {
-                        genderSelect.value = 'male';
-                    } else if (title === 'Mrs' || title === 'Ms' || title === 'Miss') {
-                        genderSelect.value = 'female';
-                    } else {
-                        // For titles like "Dr" or "Prof", let the user choose
-                        genderSelect.value = "";
-                    }
-                });
-            </script>
+    
 
                 <!-- TEST INFO TAB -->
                 <div class="tab-pane fade p-3" id="test" role="tabpanel" aria-labelledby="test-tab">
@@ -341,7 +326,22 @@
                 </div>
             </div>
         </form>
-
+        <script>
+            // When a title is selected, automatically set the gender if possible
+            document.getElementById('titleSelect').addEventListener('change', function() {
+                var title = this.value;
+                var genderSelect = document.getElementById('genderSelect');
+                // Set gender automatically based on title mapping
+                if (title === 'Mr') {
+                    genderSelect.value = 'male';
+                } else if (title === 'Mrs' || title === 'Ms' || title === 'Miss') {
+                    genderSelect.value = 'female';
+                } else {
+                    // For titles like "Dr" or "Prof", let the user choose
+                    genderSelect.value = "";
+                }
+            });
+        </script>
         <!-- JavaScript for Enter key handling & tab navigation -->
         <script>
             // Enter key handling: Move to next tab or submit form if on last tab
@@ -559,17 +559,22 @@
                 }
 
                 function recalcPayment() {
-                    gatherSelectedTests();
-                    const rawTotal = calculateTestsTotal();
-                    netCostInput.value = rawTotal.toFixed(2);
+    gatherSelectedTests();
+    const rawTotal = calculateTestsTotal();
+    netCostInput.value = rawTotal.toFixed(2);
 
-                    const { discount, netPayable } = applyPanelDiscount(rawTotal);
-                    panelDiscountInput.value = discount.toFixed(2);
-                    netPayableInput.value = netPayable.toFixed(2);
+    const { discount, netPayable } = applyPanelDiscount(rawTotal);
+    panelDiscountInput.value = discount.toFixed(2);
+    netPayableInput.value = netPayable.toFixed(2);
 
-                    const receivedVal = parseFloat(receivedInput.value) || 0;
-                    pendingInput.value = (netPayable - receivedVal).toFixed(2);
-                }
+    let receivedVal = parseFloat(receivedInput.value) || 0;
+    if(receivedVal > netPayable) {
+         alert("Received Amount cannot be greater than Net Payable");
+         receivedInput.value = netPayable.toFixed(2);
+         receivedVal = netPayable;
+    }
+    pendingInput.value = (netPayable - receivedVal).toFixed(2);
+}
 
                 receivedInput.addEventListener('input', recalcPayment);
 
