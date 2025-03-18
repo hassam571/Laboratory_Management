@@ -59,45 +59,81 @@
             <!-- TABS CONTENT -->
             <div class="tab-content" id="myTabContent">
                 <!-- PERSONAL INFO TAB -->
-                <div class="tab-pane fade show active p-3" id="personal" role="tabpanel" aria-labelledby="personal-tab">
-                    <h4>Personal Info</h4>
-                    <div class="mb-3">
-                        <label>Relation</label>
-                        <input type="text" class="form-control" name="relation">
-                    </div>
-                    <div class="mb-3">
-                        <label>Title</label>
-                        <input type="text" class="form-control" name="title" placeholder="Mr, Ms, Dr">
-                    </div>
-                    <div class="mb-3">
-                        <label>Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label>Email</label>
-                        <input type="email" class="form-control" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label>Phone</label>
-                        <input type="text" class="form-control" name="phone">
-                    </div>
-                    <div class="mb-3">
-                        <label>Gender</label>
-                        <select class="form-select" name="gender">
-                            <option value="">-- Select --</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label>Age</label>
-                        <input type="number" class="form-control" name="age">
-                    </div>
-                    <!-- Navigation for Personal Tab -->
-                    <div class="d-flex justify-content-end mt-4">
-                        <button type="button" class="btn btn-primary" onclick="nextTab()">Next</button>
+            <!-- PERSONAL INFO TAB -->
+            <div class="tab-pane fade show active p-3" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                <h4>Personal Info</h4>
+                <div class="mb-3">
+                    <label>Relation</label>
+                    <select name="relation" class="form-select" required>
+                        <option value="Self" selected>Self</option>
+                        <option value="Father">Father</option>
+                        <option value="Bro">Brother</option>
+                        <option value="Sis">Sister</option>
+                        <option value="Son">Son</option>
+                        <option value="Daughter">Daughter</option>
+                        <option value="Mother">Mother</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Title</label>
+                    <select name="title" class="form-select" id="titleSelect" required>
+                        <option value="">-- Select Title --</option>
+                        <option value="Mr">Mr</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Ms">Ms</option>
+                        <option value="Miss">Miss</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input type="email" class="form-control" name="email">
+                </div>
+                <div class="mb-3">
+                    <label>Phone</label>
+                    <div class="input-group">
+                        <span class="input-group-text">+92</span>
+                        <input type="tel" class="form-control" name="phone" pattern="3[0-9]{9}" maxlength="10" placeholder="3XXXXXXXXX" title="Enter a valid Pakistani mobile number (e.g. 3001234567)" required>
                     </div>
                 </div>
+                <div class="mb-3">
+                    <label>Gender</label>
+                    <select class="form-select" name="gender" id="genderSelect" required>
+                        <option value="">-- Select --</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="transgender">Transgender</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Age</label>
+                    <input type="number" class="form-control" name="age" required>
+                </div>
+                <!-- Navigation for Personal Tab -->
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="button" class="btn btn-primary" onclick="nextTab()">Next</button>
+                </div>
+            </div>
+            
+            <script>
+                // When a title is selected, automatically set the gender if possible
+                document.getElementById('titleSelect').addEventListener('change', function() {
+                    var title = this.value;
+                    var genderSelect = document.getElementById('genderSelect');
+                    // Set gender automatically based on title mapping
+                    if (title === 'Mr') {
+                        genderSelect.value = 'male';
+                    } else if (title === 'Mrs' || title === 'Ms' || title === 'Miss') {
+                        genderSelect.value = 'female';
+                    } else {
+                        // For titles like "Dr" or "Prof", let the user choose
+                        genderSelect.value = "";
+                    }
+                });
+            </script>
 
                 <!-- TEST INFO TAB -->
                 <div class="tab-pane fade p-3" id="test" role="tabpanel" aria-labelledby="test-tab">
@@ -330,15 +366,15 @@
                 var activeTab = document.querySelector('#myTab button.nav-link.active');
                 
                 // Validation for Personal Info Tab: ensure every input/select has a value
-                if (activeTab.id === 'personal-tab') {
-                    let personalFields = document.querySelectorAll('#personal input, #personal select');
-                    for (let field of personalFields) {
-                        if (!field.value || field.value.trim() === "") {
-                            alert("Please fill out all personal info fields.");
-                            return;
-                        }
-                    }
-                }
+            if (activeTab.id === 'personal-tab') {
+    let personalFields = document.querySelectorAll('#personal input, #personal select');
+    for (let field of personalFields) {
+        if (field.hasAttribute('required') && (!field.value || field.value.trim() === "")) {
+            alert("Please fill out all required personal info fields.");
+            return;
+        }
+    }
+}
                 
                 // Additional validation for Test Info Tab
                 if (activeTab.id === 'test-tab') {
