@@ -22,7 +22,9 @@ class ExternalPanel extends Model
     protected $fillable = [
         'panelName',
         'panelAddrs',
-        'panelDes',
+        'credits',
+        'remainingCredits',
+
         // 'createdDate' // if you decided to have a separate date column
     ];
 }

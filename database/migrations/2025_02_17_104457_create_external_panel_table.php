@@ -8,16 +8,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('external_panels', function (Blueprint $table) {
-            // If you want a custom primary key name:
-            $table->bigIncrements('extPanelId'); // primary key
+            $table->bigIncrements('extPanelId');
             $table->string('panelName');
             $table->string('panelAddrs')->nullable();
-            $table->text('panelDes')->nullable();
-
-            // If you want a separate 'createdDate' column, you can do:
-            // $table->date('createdDate')->nullable();
-
-            // Laravel's built-in created_at and updated_at
+            $table->decimal('credits', 8, 2)->default(0);            // Total Credits
+            $table->decimal('remainingCredits', 8, 2)->default(0);      // Remaining Credits
             $table->timestamps();
         });
     }

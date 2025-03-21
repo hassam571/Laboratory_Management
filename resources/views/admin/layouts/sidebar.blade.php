@@ -67,6 +67,25 @@
                                     </ul>
                                 </div>
                             </li>
+                            <li>
+                                <a href="#sidebarLc" data-bs-toggle="collapse">
+                                    <i data-feather="users"></i>
+                                    <span> Loyalty Card </span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                <div class="collapse" id="sidebarLc">
+                                    <ul class="nav-second-level">
+                                        <li>
+                                            <a href="{{route('admin.lc.pending')}}" class="tp-link">Pending LC Users</a>
+                                        </li>
+                            
+                                        <li>
+                                            <a href="{{route('admin.lc.aloted')}}" class="tp-link">Aloted LC users</a>
+                                        </li>
+                            
+                                    </ul>
+                                </div>
+                            </li>
 
                             <li>
                                 <a href="#sidebarpanal" data-bs-toggle="collapse">

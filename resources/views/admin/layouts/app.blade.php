@@ -71,6 +71,8 @@
             };
             </script>
              @yield('scripts')
+             @stack('scripts')
+
             @include('admin.layouts.scripts')
 
 

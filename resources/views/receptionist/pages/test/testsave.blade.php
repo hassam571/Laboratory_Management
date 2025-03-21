@@ -59,71 +59,70 @@
             <!-- TABS CONTENT -->
             <div class="tab-content" id="myTabContent">
                 <!-- PERSONAL INFO TAB -->
-            <!-- PERSONAL INFO TAB -->
-            <div class="tab-pane fade show active p-3" id="personal" role="tabpanel" aria-labelledby="personal-tab">
-                <h4>Personal Info</h4>
-                <div class="mb-3">
-                    <label>Relation</label>
-                    <select name="relation" class="form-select" required>
-                        <option value="Self" selected>Self</option>
-                        <option value="Father">Father</option>
-                        <option value="Bro">Brother</option>
-                        <option value="Sis">Sister</option>
-                        <option value="Son">Son</option>
-                        <option value="Daughter">Daughter</option>
-                        <option value="Mother">Mother</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label>Title</label>
-                    <select name="title" class="form-select" id="titleSelect" required>
-                        <option value="">-- Select Title --</option>
-                        <option value="Mr">Mr</option>
-                        <option value="Mrs">Mrs</option>
-                        <option value="Ms">Ms</option>
-                        <option value="Miss">Miss</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label>Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="name" required>
-                </div>
-                <div class="mb-3">
-                    <label>Email</label>
-                    <input type="email" class="form-control" name="email">
-                </div>
-                <div class="mb-3">
-                    <label>Phone</label>
-                    <div class="input-group">
-                        <span class="input-group-text">+92</span>
-                        <input type="tel" class="form-control" name="phone" pattern="3[0-9]{9}" maxlength="10" placeholder="3XXXXXXXXX" title="Enter a valid Pakistani mobile number (e.g. 3001234567)" required>
+                <div class="tab-pane fade show active p-3" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                    <h4>Personal Info</h4>
+                    <div class="mb-3">
+                        <label>Relation</label>
+                        <select name="relation" class="form-select" required>
+                            <option value="Self" selected>Self</option>
+                            <option value="Father">Father</option>
+                            <option value="Brother">Brother</option>
+                            <option value="Sister">Sister</option>
+                            <option value="Son">Son</option>
+                            <option value="Daughter">Daughter</option>
+                            <option value="Mother">Mother</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Title</label>
+                        <select name="title" class="form-select" id="titleSelect" required>
+                            <option value="">-- Select Title --</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Ms">Ms</option>
+                            <option value="Miss">Miss</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="email" class="form-control" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <label>Phone</label>
+                        <div class="input-group">
+                            <span class="input-group-text">+92</span>
+                            <input type="tel" class="form-control" name="phone" id="phonePersonal" pattern="3[0-9]{9}"
+                                maxlength="10" placeholder="3XXXXXXXXX"
+                                title="Enter a valid Pakistani mobile number (e.g. 3001234567)" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Gender</label>
+                        <select class="form-select" name="gender" id="genderSelect" required>
+                            <option value="">-- Select --</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="transgender">Transgender</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Age</label>
+                        <input type="number" class="form-control" name="age" required>
+                    </div>
+                    <!-- Navigation for Personal Tab -->
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="button" class="btn btn-primary" onclick="nextTab()">Next</button>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label>Gender</label>
-                    <select class="form-select" name="gender" id="genderSelect" required>
-                        <option value="">-- Select --</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="transgender">Transgender</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label>Age</label>
-                    <input type="number" class="form-control" name="age" required>
-                </div>
-                <!-- Navigation for Personal Tab -->
-                <div class="d-flex justify-content-end mt-4">
-                    <button type="button" class="btn btn-primary" onclick="nextTab()">Next</button>
-                </div>
-            </div>
-            
-    
 
                 <!-- TEST INFO TAB -->
                 <div class="tab-pane fade p-3" id="test" role="tabpanel" aria-labelledby="test-tab">
                     <h4>Test Info</h4>
-                    <!-- CATEGORY FILTER DROPDOWN (Real Data) -->
+                    <!-- CATEGORY FILTER DROPDOWN -->
                     <div class="mb-3 d-flex align-items-center">
                         <label for="catFilter" class="me-2">Filter by Category:</label>
                         <select id="catFilter" class="form-select" style="width: 200px;">
@@ -156,7 +155,6 @@
                                     </td>
                                     <td>{{ $test->testName }}</td>
                                     <td class="testCatCell">
-                                        {{-- Use relationship if available, otherwise fallback to the field --}}
                                         {{ $test->category ? $test->category->testCat : $test->testCatId }}
                                     </td>
                                     <td>{{ $test->testCost }}</td>
@@ -180,10 +178,10 @@
                         <label>Select Panel/Referrer</label>
                         <select class="form-select" name="referralType" id="referralType">
                             <option value="">-- Select Panel --</option>
-                            <option value="normal">Normal</option>
+                            <option value="normal">Normal/Loyalty Card</option>
                             <option value="staff">Staff Panel</option>
                             <option value="external">External Panel</option>
-                            <option value="referrer">Referrer</option>
+                            <option value="referrer">Referrer/Loyalty Card</option>
                         </select>
                     </div>
 
@@ -205,7 +203,7 @@
                                         <td>
                                             <input type="radio" name="staffPanelId" value="{{ $staff->staffPanelId }}"
                                                 data-remaining="{{ $staff->remainingCredits }}"
-                                                data-staff-name="{{ $staff->staffName }}">
+                                                data-staff-name="{{ $staff->user->name ?? 'Unknown' }}">
                                         </td>
                                         <td>{{ $staff->user->name ?? 'Unknown' }}</td>
                                         <td>{{ $staff->credits }}</td>
@@ -231,7 +229,7 @@
                                     <tr>
                                         <td>
                                             <input type="radio" name="externalPanelId" value="{{ $ext->extPanelId }}"
-                                                data-discount="{{ $ext->panelDes ?? 0 }}"
+                                                data-remaining="{{ $ext->remainingCredits }}"
                                                 data-panel-name="{{ $ext->panelName }}">
                                         </td>
                                         <td>{{ $ext->panelName }}</td>
@@ -256,8 +254,8 @@
                                 @foreach ($referrerList as $ref)
                                     <tr>
                                         <td>
-                                            <input type="radio" name="id" value="{{ $ref->id }}">
-                                        </td>
+                                            <input type="radio" name="id" value="{{ $ref->id }}"
+                                                data-referrer-name="{{ $ref->referrerName }}">
                                         <td>{{ $ref->id }}</td>
                                         <td>{{ $ref->referrerName }}</td>
                                     </tr>
@@ -289,26 +287,54 @@
                 <!-- PAYMENT TAB -->
                 <div class="tab-pane fade p-3" id="payment" role="tabpanel" aria-labelledby="payment-tab">
                     <h4>Payment</h4>
+                    @foreach ($loyaltyCards as $loyaltyCard)
+                    <div data-phone="{{ $loyaltyCard->phone_number }}"
+                         data-percentage="{{ $loyaltyCard->percentage }}" style="display:none;">
+                        {{ $loyaltyCard->phone_number }}
+                    </div>
+                @endforeach
 
-                    <!-- Show panel info (filled by JS) -->
+                    <div class="mb-3">
+                        <label>Phone Number</label>
+                        <input type="text" class="form-control" id="paymentPhone" readonly>
+                    </div>
+
                     <div id="panelInfoSection" style="display: none;">
-                        <p><strong>Panel Type:</strong> <span id="panelTypeLabel"></span></p>
-                        <p><strong>Panel Name:</strong> <span id="panelNameLabel"></span></p>
-                        <p><strong>Staff Remaining Credits:</strong> <span id="staffRemainingLabel"></span></p>
-                        <p><strong>External Discount:</strong> <span id="externalDiscountLabel"></span></p>
+                        <p id="pPanelType"><strong>Panel Type:</strong> <span id="panelTypeLabel"></span></p>
+                        <p id="pPanelName"><strong>Panel Name:</strong> <span id="panelNameLabel"></span></p>
+                        <p id="pStaffRemaining"><strong>Staff Remaining Credits:</strong> <span
+                                id="staffRemainingLabel"></span></p>
+                        <p id="pExternalDiscount"><strong>External Discount:</strong> <span
+                                id="externalDiscountLabel"></span></p>
                     </div>
 
                     <div class="mb-3">
                         <label>Net Cost (before discount):</label>
-                        <input type="number" class="form-control" name="netCost" id="netCost" value="0" readonly>
+                        <input type="number" class="form-control" name="netCost" id="netCost" value="0"
+                            readonly>
                     </div>
-                    <div class="mb-3">
+                    <!-- Panel / Staff Discount -->
+                    <div class="mb-3" id="panelDiscountContainer">
                         <label>Panel / Staff Discount (if any):</label>
-                        <input type="number" class="form-control" name="panelDiscount" id="panelDiscount" value="0" readonly>
+                        <input type="number" class="form-control" name="panelDiscount" id="panelDiscount"
+                            value="0" readonly>
+                    </div>
+
+                    <!-- Loyalty Discount (%) -->
+                    <div class="mb-3" id="loyaltyDiscountContainerPercent">
+                        <label>Loyalty Discount (%)</label>
+                        <input type="text" class="form-control" id="loyaltyDiscountPercent" value="0" readonly>
+                    </div>
+
+                    <!-- Loyalty Discount Amount -->
+                    <div class="mb-3" id="loyaltyDiscountContainerAmount">
+                        <label>Loyalty Discount Amount</label>
+                        <input type="text" class="form-control" id="loyaltyDiscountAmount" value="0" readonly>
                     </div>
                     <div class="mb-3">
                         <label>Net Payable:</label>
-                        <input type="number" class="form-control" name="netPayable" id="netPayable" value="0" readonly>
+                        <input type="number" class="form-control" name="netPayable" id="netPayable" value="0"
+                            readonly>
                     </div>
                     <div class="mb-3">
                         <label>Received Amount</label>
@@ -316,7 +342,8 @@
                     </div>
                     <div class="mb-3">
                         <label>Pending Amount</label>
-                        <input type="number" class="form-control" name="pending" step="0.01" id="pendingInput" readonly>
+                        <input type="number" class="form-control" name="pending" step="0.01" id="pendingInput"
+                            readonly>
                     </div>
                     <!-- Navigation for Payment Tab -->
                     <div class="d-flex justify-content-between mt-4">
@@ -326,57 +353,43 @@
                 </div>
             </div>
         </form>
+
         <script>
-            // When a title is selected, automatically set the gender if possible
+            document.getElementById('phonePersonal').addEventListener('input', function() {
+                document.getElementById('paymentPhone').value = this.value;
+                recalcPayment(); // <-- This is crucial
+            });
+
+            // Set gender based on title selection
             document.getElementById('titleSelect').addEventListener('change', function() {
                 var title = this.value;
                 var genderSelect = document.getElementById('genderSelect');
-                // Set gender automatically based on title mapping
                 if (title === 'Mr') {
                     genderSelect.value = 'male';
                 } else if (title === 'Mrs' || title === 'Ms' || title === 'Miss') {
                     genderSelect.value = 'female';
                 } else {
-                    // For titles like "Dr" or "Prof", let the user choose
                     genderSelect.value = "";
                 }
             });
-        </script>
-        <!-- JavaScript for Enter key handling & tab navigation -->
-        <script>
-            // Enter key handling: Move to next tab or submit form if on last tab
-            document.getElementById('mainForm').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && e.target.tagName.toLowerCase() !== 'textarea') {
-        e.preventDefault();
-        var tabButtons = Array.from(document.querySelectorAll('#myTab button.nav-link'));
-        var activeTab = document.querySelector('#myTab button.nav-link.active');
-        var activeIndex = tabButtons.indexOf(activeTab);
-        if(activeIndex < tabButtons.length - 1) {
-            // Call nextTab() to trigger validation before navigating
-            nextTab();
-        } else {
-            document.getElementById('mainForm').submit();
-        }
-    }
-});
 
-            // Functions to navigate between tabs
+            // Tab navigation functions
             function nextTab() {
                 var tabButtons = Array.from(document.querySelectorAll('#myTab button.nav-link'));
                 var activeTab = document.querySelector('#myTab button.nav-link.active');
-                
-                // Validation for Personal Info Tab: ensure every input/select has a value
-            if (activeTab.id === 'personal-tab') {
-    let personalFields = document.querySelectorAll('#personal input, #personal select');
-    for (let field of personalFields) {
-        if (field.hasAttribute('required') && (!field.value || field.value.trim() === "")) {
-            alert("Please fill out all required personal info fields.");
-            return;
-        }
-    }
-}
-                
-                // Additional validation for Test Info Tab
+
+                // Validation for Personal Info Tab
+                if (activeTab.id === 'personal-tab') {
+                    let personalFields = document.querySelectorAll('#personal input, #personal select');
+                    for (let field of personalFields) {
+                        if (field.hasAttribute('required') && (!field.value || field.value.trim() === "")) {
+                            alert("Please fill out all required personal info fields.");
+                            return;
+                        }
+                    }
+                }
+
+                // Validation for Test Info Tab
                 if (activeTab.id === 'test-tab') {
                     var selectedTest = document.querySelector('.test-check:checked');
                     if (!selectedTest) {
@@ -384,8 +397,8 @@
                         return;
                     }
                 }
-                
-                // Additional validation for Referral Tab
+
+                // Validation for Referral Tab
                 if (activeTab.id === 'referral-tab') {
                     var referralType = document.getElementById('referralType').value;
                     if (referralType === 'staff') {
@@ -408,27 +421,38 @@
                         }
                     }
                 }
-                
-                var activeIndex = tabButtons.indexOf(activeTab);
-                if(activeIndex < tabButtons.length - 1) {
+
+                var tabButtons = Array.from(document.querySelectorAll('#myTab button.nav-link'));
+                var activeIndex = tabButtons.indexOf(document.querySelector('#myTab button.nav-link.active'));
+                if (activeIndex < tabButtons.length - 1) {
                     tabButtons[activeIndex + 1].click();
                 }
             }
 
             function previousTab() {
                 var tabButtons = Array.from(document.querySelectorAll('#myTab button.nav-link'));
-                var activeTab = document.querySelector('#myTab button.nav-link.active');
-                var activeIndex = tabButtons.indexOf(activeTab);
-                if(activeIndex > 0) {
+                var activeIndex = tabButtons.indexOf(document.querySelector('#myTab button.nav-link.active'));
+                if (activeIndex > 0) {
                     tabButtons[activeIndex - 1].click();
                 }
             }
-        </script>
 
-        <!-- JavaScript: Test Selection, Category Filtering, Referral Panels, Payment Calculation -->
-        <script>
+            // Enter key handling: move to next tab or submit form on last tab
+            document.getElementById('mainForm').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && e.target.tagName.toLowerCase() !== 'textarea') {
+                    e.preventDefault();
+                    var tabButtons = Array.from(document.querySelectorAll('#myTab button.nav-link'));
+                    var activeIndex = tabButtons.indexOf(document.querySelector('#myTab button.nav-link.active'));
+                    if (activeIndex < tabButtons.length - 1) {
+                        nextTab();
+                    } else {
+                        document.getElementById('mainForm').submit();
+                    }
+                }
+            });
+
+            // Payment calculation and test selection logic
             document.addEventListener('DOMContentLoaded', function() {
-                // --------------- Test Selection & Filtering ---------------
                 const testChecks = document.querySelectorAll('.test-check');
                 const testsJsonInput = document.getElementById('testsJson');
                 const catFilter = document.getElementById('catFilter');
@@ -464,37 +488,34 @@
                         const catCell = row.querySelector('.testCatCell');
                         if (!catCell) return;
                         const rowCat = catCell.textContent.trim().toLowerCase();
-                        if (selectedCategory === 'all' || rowCat === selectedCategory) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
+                        row.style.display = (selectedCategory === 'all' || rowCat ===
+                            selectedCategory) ? '' : 'none';
                     });
                 });
 
-                // --------------- Referral Panel Show/Hide ---------------
+                // Referral panel show/hide logic
                 const referralType = document.getElementById('referralType');
                 const staffPanelSection = document.getElementById('staffPanelSection');
                 const externalPanelSection = document.getElementById('externalPanelSection');
                 const referrerSection = document.getElementById('referrerSection');
 
                 referralType.addEventListener('change', function() {
-                    const val = referralType.value;
+                    // Hide all sections first
                     staffPanelSection.style.display = 'none';
                     externalPanelSection.style.display = 'none';
                     referrerSection.style.display = 'none';
 
-                    if (val === 'staff') {
+                    if (this.value === 'staff') {
                         staffPanelSection.style.display = '';
-                    } else if (val === 'external') {
+                    } else if (this.value === 'external') {
                         externalPanelSection.style.display = '';
-                    } else if (val === 'referrer') {
+                    } else if (this.value === 'referrer') {
                         referrerSection.style.display = '';
                     }
                     recalcPayment();
                 });
 
-                // --------------- Payment Calculation ---------------
+                // Payment calculation logic
                 const netCostInput = document.getElementById('netCost');
                 const panelDiscountInput = document.getElementById('panelDiscount');
                 const netPayableInput = document.getElementById('netPayable');
@@ -530,22 +551,47 @@
                             discount = Math.min(rawTotal, staffRemaining);
                             netPayable = rawTotal - discount;
                             panelTypeLabel.textContent = "Staff Panel";
-                            panelNameLabel.textContent = checkedStaff.getAttribute('data-staff-name');
+                            panelNameLabel.textContent = checkedStaff.getAttribute('data-staff-name') || 'Unknown';
                             staffRemainingLabel.textContent = staffRemaining.toFixed(2);
-                            externalDiscountLabel.textContent = "-";
+                            // Hide external discount label
+                            externalDiscountLabel.textContent = "";
+                            externalDiscountLabel.parentElement.style.display = 'none';
+                            // Show staff remaining label
+                            staffRemainingLabel.parentElement.style.display = '';
                             panelInfoSection.style.display = '';
                         }
                     } else if (referralVal === 'external') {
                         const checkedExt = document.querySelector('input[name="externalPanelId"]:checked');
                         if (checkedExt) {
-                            const extDiscount = parseFloat(checkedExt.getAttribute('data-discount')) || 0;
-                            discount = Math.min(rawTotal, extDiscount);
+                            const extRemaining = parseFloat(checkedExt.getAttribute('data-remaining')) || 0;
+                            discount = Math.min(rawTotal, extRemaining);
                             netPayable = rawTotal - discount;
                             panelTypeLabel.textContent = "External Panel";
-                            panelNameLabel.textContent = checkedExt.getAttribute('data-panel-name');
-                            externalDiscountLabel.textContent = extDiscount.toFixed(2);
-                            staffRemainingLabel.textContent = "-";
+                            panelNameLabel.textContent = checkedExt.getAttribute('data-panel-name') || 'Unknown';
+                            externalDiscountLabel.textContent = extRemaining.toFixed(2);
+                            // Hide staff remaining label
+                            staffRemainingLabel.textContent = "";
+                            staffRemainingLabel.parentElement.style.display = 'none';
+                            // Show external discount label container
+                            externalDiscountLabel.parentElement.style.display = '';
                             panelInfoSection.style.display = '';
+                        }
+                    } else if (referralVal === 'referrer') {
+                        const checkedReferrer = document.querySelector('input[name="id"]:checked');
+                        if (checkedReferrer) {
+                            panelTypeLabel.textContent = "Referrer";
+                            panelNameLabel.textContent = checkedReferrer.getAttribute('data-referrer-name') ||
+                            'Unknown';
+                            // For referrers, we want to display the referrer name.
+                            // Additionally, if you need to display external panel's remaining credits for discount purposes, 
+                            // you could do that here if required. For now, we simply clear discount info.
+                            staffRemainingLabel.textContent = "";
+                            externalDiscountLabel.textContent = "";
+                            staffRemainingLabel.parentElement.style.display = 'none';
+                            externalDiscountLabel.parentElement.style.display = 'none';
+                            panelInfoSection.style.display = '';
+                            discount = 0;
+                            netPayable = rawTotal;
                         }
                     } else {
                         discount = 0;
@@ -559,33 +605,89 @@
                 }
 
                 function recalcPayment() {
-    gatherSelectedTests();
-    const rawTotal = calculateTestsTotal();
-    netCostInput.value = rawTotal.toFixed(2);
+                    gatherSelectedTests();
+                    const rawTotal = calculateTestsTotal();
+                    netCostInput.value = rawTotal.toFixed(2);
 
-    const { discount, netPayable } = applyPanelDiscount(rawTotal);
-    panelDiscountInput.value = discount.toFixed(2);
-    netPayableInput.value = netPayable.toFixed(2);
+                    // 1) Apply panel/staff/external/referrer discount logic
+                    const {
+                        discount: panelDisc,
+                        netPayable: panelNet
+                    } = applyPanelDiscount(rawTotal);
+                    panelDiscountInput.value = panelDisc.toFixed(2);
 
-    let receivedVal = parseFloat(receivedInput.value) || 0;
-    if(receivedVal > netPayable) {
-         alert("Received Amount cannot be greater than Net Payable");
-         receivedInput.value = netPayable.toFixed(2);
-         receivedVal = netPayable;
-    }
-    pendingInput.value = (netPayable - receivedVal).toFixed(2);
-}
+                    // We'll assume netPayable starts from the panel discount result
+                    let finalNetPayable = panelNet;
+
+                    // 2) If a panel discount (staff/external/referrer) was applied, skip loyalty discount
+                    let loyaltyDiscountPercentVal = 0;
+                    if (panelDisc > 0) {
+                        document.getElementById('loyaltyDiscountPercent').value = '0';
+                        document.getElementById('loyaltyDiscountAmount').value = '0';
+                    } else {
+                        // Check loyalty discount if no panel discount applies
+                        const paymentPhone = document.getElementById('paymentPhone').value.trim();
+                        let loyaltyPercent = 0;
+                        const loyaltyDivs = document.querySelectorAll('div[data-phone][data-percentage]');
+                        loyaltyDivs.forEach(div => {
+                            const phone = div.getAttribute('data-phone');
+                            if (phone === paymentPhone) {
+                                loyaltyPercent = parseFloat(div.getAttribute('data-percentage')) || 0;
+                            }
+                        });
+                        if (loyaltyPercent > 0) {
+                            const loyaltyAmount = rawTotal * (loyaltyPercent / 100);
+                            finalNetPayable = rawTotal - loyaltyAmount;
+                            document.getElementById('loyaltyDiscountPercent').value = loyaltyPercent.toFixed(2) + ' %';
+                            document.getElementById('loyaltyDiscountAmount').value = loyaltyAmount.toFixed(2);
+                            panelDiscountInput.value = '0';
+                            panelInfoSection.style.display = 'none';
+                            loyaltyDiscountPercentVal = loyaltyPercent;
+                        } else {
+                            document.getElementById('loyaltyDiscountPercent').value = '0';
+                            document.getElementById('loyaltyDiscountAmount').value = '0';
+                        }
+                    }
+
+                    // 3) Update Net Payable
+                    netPayableInput.value = finalNetPayable.toFixed(2);
+
+                    // 4) Received & Pending amounts
+                    let receivedVal = parseFloat(receivedInput.value) || 0;
+                    if (receivedVal > finalNetPayable) {
+                        alert("Received Amount cannot be greater than Net Payable");
+                        receivedInput.value = finalNetPayable.toFixed(2);
+                        receivedVal = finalNetPayable;
+                    }
+                    pendingInput.value = (finalNetPayable - receivedVal).toFixed(2);
+
+                    // 5) Hide/Show loyalty discount containers based on loyalty discount values
+                    toggleDiscountVisibility(panelDisc, loyaltyDiscountPercentVal);
+                }
+
+                // Helper function to hide/show discount containers
+                function toggleDiscountVisibility(panelDisc, loyaltyDiscountPercentVal) {
+                    if (panelDisc > 0) {
+                        document.getElementById('panelDiscountContainer').style.display = 'block';
+                    } else {
+                        document.getElementById('panelDiscountContainer').style.display = 'none';
+                    }
+                    if (loyaltyDiscountPercentVal > 0) {
+                        document.getElementById('loyaltyDiscountContainerPercent').style.display = 'block';
+                        document.getElementById('loyaltyDiscountContainerAmount').style.display = 'block';
+                    } else {
+                        document.getElementById('loyaltyDiscountContainerPercent').style.display = 'none';
+                        document.getElementById('loyaltyDiscountContainerAmount').style.display = 'none';
+                    }
+                }
 
                 receivedInput.addEventListener('input', recalcPayment);
 
                 const staffRadios = document.querySelectorAll('input[name="staffPanelId"]');
-                staffRadios.forEach(radio => {
-                    radio.addEventListener('change', recalcPayment);
-                });
+                staffRadios.forEach(radio => radio.addEventListener('change', recalcPayment));
+
                 const externalRadios = document.querySelectorAll('input[name="externalPanelId"]');
-                externalRadios.forEach(radio => {
-                    radio.addEventListener('change', recalcPayment);
-                });
+                externalRadios.forEach(radio => radio.addEventListener('change', recalcPayment));
 
                 testsJsonInput.value = '[]';
                 recalcPayment();
@@ -593,3 +695,6 @@
         </script>
     </div>
 @endsection
+
+@push('scripts')
+@endpush

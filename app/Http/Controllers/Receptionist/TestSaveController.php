@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Receptionist;
 
+use App\Models\Lc;
 use App\Models\Test;
 use App\Models\Payment;
-use App\Models\Customer;
 
 // Models
+use App\Models\Customer;
 use App\Models\Referral;
 use App\Models\StaffPanel;
 use App\Models\CustomerTest;
@@ -32,8 +33,8 @@ class TestSaveController extends Controller
     public function showForm()
     {
         // Fetch real categories from your test_categories table
-        $categories = \App\Models\TestCategory::all();  // Ensure you have this model
-
+        $categories = \App\Models\TestCategory::all(); // Ensure you have this model
+    
         // Fetch tests with relationship (if available)
         $availableTests = \App\Models\Test::with('category')->get();
         
@@ -41,16 +42,19 @@ class TestSaveController extends Controller
         $staffList = \App\Models\StaffPanel::all();
         $externalList = \App\Models\ExternalPanel::all();
         $referrerList = \App\Models\Referral::all();
-
+    
+        // Fetch loyalty cards (LC records)
+        $loyaltyCards = Lc::select('phone_number', 'percentage')->get();
+    
         return view('receptionist.pages.test.testsave', [
-            'categories' => $categories,
-            'availableTests' => $availableTests,
-            'staffList' => $staffList,
-            'externalList' => $externalList,
-            'referrerList' => $referrerList,
+            'categories'      => $categories,
+            'availableTests'  => $availableTests,
+            'staffList'       => $staffList,
+            'externalList'    => $externalList,
+            'referrerList'    => $referrerList,
+            'loyaltyCards'    => $loyaltyCards,
         ]);
     }
-
     /**
      * Handle the submission of all tabs in one go, saving to:
      * 1) customers
@@ -60,14 +64,13 @@ class TestSaveController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         // Convert 'tests' JSON string to an array if needed
         if ($request->filled('tests') && is_string($request->input('tests'))) {
             $request->merge([
                 'tests' => json_decode($request->input('tests'), true)
             ]);
         }
-
+    
         // Validate the fields from all tabs
         $validated = $request->validate([
             // Personal Info (customers table)
@@ -78,31 +81,25 @@ class TestSaveController extends Controller
             'phone'         => 'nullable|string|max:50',
             'gender'        => 'nullable|string',
             'age'           => 'nullable|integer',
-
-            // Referral: referralType must be one of: normal, staff, external, referrer
+    
             'referralType'  => 'nullable|string|in:normal,staff,external,referrer',
-            // If staff panel is chosen, a staffPanelId should be provided
             'staffPanelId'  => 'nullable|integer',
-            'id'  => 'nullable|integer',
-
-            // Comments
+            'id'            => 'nullable|integer',
             'comment'       => 'nullable|string',
-
-            // Discount
             'testDiscount'  => 'nullable|numeric',
-
+    
             // Tests (array)
             'tests'                 => 'nullable|array',
             'tests.*.addTestId'     => 'required|integer',
             'tests.*.testName'      => 'required|string',
             'tests.*.testCatId'     => 'required|string',
             'tests.*.testCost'      => 'required|numeric',
-
+    
             // Payment
             'recieved'      => 'nullable|numeric',
             'pending'       => 'nullable|numeric',
         ]);
-
+    
         DB::beginTransaction();
         try {
             // 1) Create the customer
@@ -114,18 +111,14 @@ class TestSaveController extends Controller
                 'phone'         => $validated['phone'] ?? null,
                 'gender'        => $validated['gender'] ?? null,
                 'age'           => $validated['age'] ?? null,
-                // For referral, if it's external, you may store external info here; if staff, we'll update later.
                 'extPanelId'    => ($validated['referralType'] === 'external') ? ($request->input('externalPanelId') ?? null) : null,
-                'addRefrealId'    => ($validated['referralType'] === 'referrer') ? ($request->input('id') ?? null) : null,
-                'staffPanelId'    => ($validated['referralType'] === 'staff') ? ($request->input('staffPanelId') ?? null) : null,
-                // 'staffPanelId'    => $validated['staffPanelId'] ?? null,
+                'addRefrealId'  => ($validated['referralType'] === 'referrer') ? ($request->input('id') ?? null) : null,
+                'staffPanelId'  => ($validated['referralType'] === 'staff') ? ($request->input('staffPanelId') ?? null) : null,
                 'comment'       => $validated['comment'] ?? null,
-                // 'addRefrealId'    => ($validated['addRefrealId'] )?? null,
-                // 'extPanelId'    => ($validated['extPanelId'] )?? null,
                 'testDiscount'  => $validated['testDiscount'] ?? 0,
                 'createdDate'   => now(),
             ]);
-
+    
             // 2) Create rows in customer_tests
             if (!empty($validated['tests'])) {
                 foreach ($validated['tests'] as $testData) {
@@ -138,7 +131,7 @@ class TestSaveController extends Controller
                     ]);
                 }
             }
-
+    
             // 3) Create a payment record
             Payment::create([
                 'customerId'  => $customer->customerId,
@@ -146,27 +139,45 @@ class TestSaveController extends Controller
                 'pending'     => $validated['pending']  ?? 0,
                 'createdDate' => now(),
             ]);
-
-            // 4) Update staff's remaining credits if referral type is 'staff'
+    
+            // Calculate raw total cost from selected tests (if any)
+            $rawTotal = 0;
+            if (!empty($validated['tests'])) {
+                foreach ($validated['tests'] as $t) {
+                    $rawTotal += $t['testCost'];
+                }
+            }
+    
+            // 4) Update staff panel's remaining credits if referral type is 'staff'
             if ($validated['referralType'] === 'staff') {
                 $staffPanelId = $request->input('staffPanelId');
                 if ($staffPanelId) {
                     $staffPanel = \App\Models\StaffPanel::find($staffPanelId);
-                    if ($staffPanel && !empty($validated['tests'])) {
-                        // Calculate raw total cost from selected tests
-                        $rawTotal = 0;
-                        foreach ($validated['tests'] as $t) {
-                            $rawTotal += $t['testCost'];
-                        }
+                    if ($staffPanel && $rawTotal > 0) {
                         // Discount is the minimum of raw total and the staff's remaining credits
                         $discount = min($rawTotal, $staffPanel->remainingCredits);
-                        // Update remaining credits
+                        // Deduct discount from staff panel's remaining credits
                         $staffPanel->remainingCredits -= $discount;
                         $staffPanel->save();
                     }
                 }
             }
-
+    
+            // 5) Update external panel's remaining credits if referral type is 'external'
+            if ($validated['referralType'] === 'external') {
+                $externalPanelId = $request->input('externalPanelId');
+                if ($externalPanelId) {
+                    $externalPanel = \App\Models\ExternalPanel::find($externalPanelId);
+                    if ($externalPanel && $rawTotal > 0) {
+                        // Discount is the minimum of raw total and the external panel's remaining credits
+                        $discount = min($rawTotal, $externalPanel->remainingCredits);
+                        // Deduct discount from external panel's remaining credits
+                        $externalPanel->remainingCredits -= $discount;
+                        $externalPanel->save();
+                    }
+                }
+            }
+    
             DB::commit();
             return redirect()->back()->with('success', 'All data saved successfully!');
         } catch (\Exception $e) {

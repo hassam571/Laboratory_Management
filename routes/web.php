@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 // use App\Http\Controllers\DebitController;
 // use App\Http\Controllers\CreditController;
+use App\Http\Controllers\Admin\LcController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ReferralController;
@@ -31,6 +32,9 @@ Route::get('/permission-denied', [AuthController::class, 'roleerror'])->name('au
 
 
 
+
+
+
  Route::middleware(['auth'])->group(function () {
 
 
@@ -38,6 +42,17 @@ Route::get('/permission-denied', [AuthController::class, 'roleerror'])->name('au
             
                     Route::get('/', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
 
+                    Route::prefix('loyalty-card')->group(function () {
+                        Route::get('/pending', [LcController::class, 'pending'])->name('admin.lc.pending');
+                        Route::get('/aloted', [LcController::class, 'aloted'])->name('admin.lc.aloted');
+                        Route::post('/store', [LcController::class, 'store'])->name('admin.loyalty.store');
+                        Route::delete('/{id}', [LcController::class, 'destroy'])->name('admin.lc.destroy');    
+                        Route::get('discount', [\App\Http\Controllers\Admin\LcController::class, 'discount'])->name('admin.lc.discount');                 
+                    });
+
+              
+              
+              
                     Route::prefix('users')->group(function () {
                         Route::get('/', [UserController::class, 'index'])->name('admin.users.index');
                         Route::get('/create', [UserController::class, 'create'])->name('admin.users.create');

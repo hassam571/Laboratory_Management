@@ -18,7 +18,8 @@
                         <tr>
                             <th>Panel Name</th>
                             <th>Panel Address</th>
-                            <th>Panel Description</th>
+                            <th>Total Credits</th>
+                            <th>Remaining Credits</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -28,7 +29,8 @@
                         <tr>
                             <td>{{ $panel->panelName }}</td>
                             <td>{{ $panel->panelAddrs }}</td>
-                            <td>{{ $panel->panelDes }}</td>
+                            <td>{{ $panel->credits }}</td>
+                            <td>{{ $panel->remainingCredits }}</td>
                             <td>{{ $panel->created_at->format('Y-m-d') }}</td>
                             <td>
                                 <a href="{{ route('admin.external.edit', $panel->extPanelId) }}" class="btn btn-sm btn-primary">Edit</a>
