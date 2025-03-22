@@ -51,6 +51,7 @@
             </table>
         </div>
     </div>
+    @if($report->signStatus == 'pending')
     <div class="card mt-3">
         <div class="card-body">
             <h4>Actions</h4>
@@ -65,6 +66,7 @@
             </form>
         </div>
     </div>
+@endif
     
     <script>
         function setAction(status) {

@@ -1,3 +1,4 @@
+
 @extends('receptionist.layouts.app')
 
 @section('content')

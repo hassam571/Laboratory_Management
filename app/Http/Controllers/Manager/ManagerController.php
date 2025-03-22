@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Manager;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\TestReport;
+use App\Models\CustomerTest;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ManagerController extends Controller
 {
@@ -53,9 +54,15 @@ public function updateSignStatus(Request $request, $reportId)
         return redirect()->back()->with('error', 'Report not found.');
     }
 
-    // Update sign status based on user selection
-    $report->signStatus = $request->action;
+    $newStatus = $request->action; // Get the new sign status from the request
+
+    // Update the TestReport signStatus
+    $report->signStatus = $newStatus;
     $report->save();
+
+    // Also update the corresponding CustomerTest testStatus using the report's ctId
+    CustomerTest::where('ctId', $report->ctId)
+        ->update(['testStatus' => $newStatus]);
 
     return redirect()->back()->with('success', 'Sign status updated successfully.');
 }

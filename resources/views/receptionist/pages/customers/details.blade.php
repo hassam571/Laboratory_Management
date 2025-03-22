@@ -2,62 +2,61 @@
 
 @section('content')
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <h2>Customer Details</h2>
-    </div>
+    <h2 class="mb-4">Report Details</h2>
 
-    <!-- Personal Information -->
-    <div class="card mt-3">
+    <div class="card">
         <div class="card-body">
-            <h4 class="mb-3">Personal Information</h4>
-            <p><strong>Name:</strong> {{ $customer->name }}</p>
-            <p><strong>Email:</strong> {{ $customer->email }}</p>
-            <p><strong>Phone:</strong> {{ $customer->phone }}</p>
+            <h4>Customer Information</h4>
+            <p><strong>Name:</strong> {{ $report->customerTest->customer->name ?? 'N/A' }}</p>
+            <p><strong>Email:</strong> {{ $report->customerTest->customer->email ?? 'N/A' }}</p>
+            <p><strong>Phone:</strong> {{ $report->customerTest->customer->phone ?? 'N/A' }}</p>
         </div>
     </div>
 
-    <!-- Payment Information -->
     <div class="card mt-3">
         <div class="card-body">
-            <h4 class="mb-3">Payment Information</h4>
-            <p><strong>Pending Amount:</strong> 
-                ${{ number_format($customer->payments->sum('pending'), 2) }}
-            </p>
-            <p><strong>Amount Paid:</strong> 
-                ${{ number_format($customer->payments->sum('received'), 2) }}
-            </p>
+            <h4>Test Information</h4>
+            <p><strong>Test Name:</strong> {{ $report->customerTest->test->testName ?? 'N/A' }}</p>
+            <p><strong>Sample Type:</strong> {{ $report->customerTest->test->typeSample ?? 'N/A' }}</p>
+            <p><strong>How Sample Collected:</strong> {{ $report->customerTest->test->howSample ?? 'N/A' }}</p>
         </div>
     </div>
 
-    <!-- Test Information -->
     <div class="card mt-3">
         <div class="card-body">
-            <h4 class="mb-3">Tests</h4>
+            <h4>Test Values</h4>
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Test Name</th>
-                        <th>Status</th>
-                    
-                        
+                        <th>Range Nam</th>
+                        <th>Min Value</th>
+                        <th>Max Value</th>
+                        <th>Unit</th>
+                        <th>Entered Value</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($customer->tests as $test)
+                    @foreach($report->customerTest->test->testRanges as $index => $range)
                     <tr>
-                        <td>{{ optional($test->test)->testName ?? 'N/A' }}</td>
+                        <td>{{ $range->testTypeName }}</td>
+                        <td>{{ $range->minRange }}</td>
+                        <td>{{ $range->maxRange }}</td>
+                        <td>{{ $range->unit }}</td>
                         <td>
-                            <span class="badge bg-info">
-                                {{ optional($test->test)->signStatus }}
-                            </span>
+                            {{ isset($report->reportChildren[$index]) ? $report->reportChildren[$index]->reportValue : 'N/A' }}
                         </td>
-                    
-                      
                     </tr>
-                    @endforeach
+                @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+
+    
+    <script>
+        function setAction(status) {
+            document.getElementById('actionInput').value = status;
+        }
+    </script>
 </div>
 @endsection

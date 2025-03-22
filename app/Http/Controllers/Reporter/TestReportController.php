@@ -40,7 +40,9 @@ class TestReportController extends Controller
 public function viewTestDetails($customerId)
 {
     $customer = Customer::where('customerId', $customerId)->first();
-    $tests = CustomerTest::where('customerId', $customerId)->with('test')->get();
+    $tests = CustomerTest::where('customerId', $customerId)
+    ->where('testStatus','collected')
+    ->with('test')->get();
 
     return view('reporter.pages.test-details', compact('customer', 'tests'));
 }
@@ -100,7 +102,7 @@ public function showTestReport($addTestId, $customerId)
     if (!$customerTest) {
         return redirect()->back()->with('error', 'Customer Test not found.');
     }
-
+ 
     // Retrieve the related test
     $test = $customerTest->test;
 
@@ -133,39 +135,39 @@ public function store(Request $request)
         'reportValue.*' => 'numeric',
     ]);
 
-    // 🔍 Debugging: Check if Auth::id() returns a valid value
     if (!Auth::check()) {
         return redirect()->back()->with('error', 'User not authenticated.');
     }
 
-    // ✅ Start a database transaction to ensure data integrity
-    \DB::beginTransaction();
+    DB::beginTransaction();
 
     try {
-        // ✅ Store Test Report
+        // Store Test Report
         $report = TestReport::create([
             'ctId' => $validatedData['ctId'],
-            'reporterId' => Auth::id(), // ✅ Ensure this exists
+            'reporterId' => Auth::id(),
             'signStatus' => 'pending',
             'createdDate' => now(),
         ]);
 
-        // ✅ Store Test Report Child Entries
+        // Store Test Report Child Entries
         foreach ($validatedData['testRangeId'] as $key => $testRangeId) {
             TestReportChild::create([
-                'reportId' => $report->reportId, // Use the newly created reportId
+                'reportId' => $report->reportId,
                 'testRangeId' => $testRangeId,
                 'reportValue' => $validatedData['reportValue'][$key],
             ]);
         }
 
-        // ✅ Commit transaction if everything is successful
-        \DB::commit();
+        // Update the CustomerTest record's testStatus to "reported"
+        CustomerTest::where('ctId', $validatedData['ctId'])
+            ->update(['testStatus' => 'reported']);
+
+        DB::commit();
 
         return redirect()->back()->with('success', 'Report submitted successfully.');
     } catch (\Exception $e) {
-        // ❌ Rollback if any error occurs
-        \DB::rollBack();
+        DB::rollBack();
         return redirect()->back()->with('error', 'Something went wrong. ' . $e->getMessage());
     }
 }

@@ -61,8 +61,11 @@
                                             <a href="{{ route('testsave.showForm') }}" class="tp-link">Add Test</a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('receptionist.customers') }}" class="tp-link">view Test</a>
+                                            <a href="{{ route('receptionist.customers') }}" class="tp-link">Accepted Reports</a>
                                         </li>
+                                        {{-- <li>    
+                                            <a href="{{ route('receptionist.customers.revoked') }}" class="tp-link">Revoked Reports</a>
+                                        </li> --}}
                                     </ul>
                                 </div>
                             </li>
